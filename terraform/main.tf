@@ -1,4 +1,4 @@
-module "name" {
+module "vpc" {
     source = "./modules/vpc"
     
     vpc_name            = var.vpc_name
@@ -6,4 +6,4 @@ module "name" {
     public_subnet_cidrs = var.public_subnet_cidrs
     availability_zones  = var.availability_zones
     tags                = var.tags
-}       
+}

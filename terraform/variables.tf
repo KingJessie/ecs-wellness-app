@@ -4,6 +4,11 @@ variable "region" {
   default     = "eu-west-2"
 }
 
+variable "project_name" {
+  description = "Project name."
+  type        = string
+}
+
 variable "vpc_name" {
   description = "VPC name."
   type        = string

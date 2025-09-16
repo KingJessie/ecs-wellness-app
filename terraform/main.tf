@@ -9,9 +9,17 @@ module "vpc" {
 }
 
 module "ecr" {
-  source = "./modules/ecr"
-
+  source       = "./modules/ecr"
   project_name = var.project_name
   tags         = var.tags
 }
+
+
+module "iam" {
+  source       = "./modules/iam"
+  project_name = var.project_name
+  tags         = var.tags
+
+}
+
 

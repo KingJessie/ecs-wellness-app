@@ -35,8 +35,8 @@ variable "tags" {
   default     = {}
 }
 
-variable "project_name" {
-  description = "The name of the project."
+variable "repository_name" {
+  description = "The name of the ECR repository."
   type        = string
-  
+
 }

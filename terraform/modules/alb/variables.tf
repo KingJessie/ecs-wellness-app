@@ -11,11 +11,7 @@ variable "public_subnet_ids" {
 variable "tags" {
   description = "Resource tag key-value pairs"
   type        = map(string)
-  default = {
-    project = "defectdojo-app"
-    env     = "dev"
-    Owner   = "jessie.king"
-  }
+  default = {}
 }
 
 variable "vpc_id" {

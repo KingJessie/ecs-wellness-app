@@ -60,35 +60,35 @@ output "http_tg_arn" {
 
 output "acm_certificate_arn" {
   description = "The ACM certificate ARN."
-  value       = aws_acm_certificate.cert.arn
+  value       = module.acm.acm_certificate_arn
 }
 
 output "acm_certificate_validated_arn" {
   description = "The validated ACM certificate ARN."
-  value       = aws_acm_certificate_validation.cert.certificate_arn
+  value       = module.acm.acm_certificate_validated_arn
 }
 
 output "acm_certificate_domain" {
   description = "The primary domain name of the ACM certificate."
-  value       = aws_acm_certificate.cert.domain_name
+  value       = module.acm.acm_certificate_domain
 }
 
 output "acm_certificate_status" {
   description = "The status of the ACM certificate."
-  value       = aws_acm_certificate.cert.status
+  value       = module.acm.acm_certificate_status
 }
 
 output "acm_certificate_validation_record_fqdns" {
   description = "The FQDNs of DNS records used for validation."
-  value       = [for r in aws_route53_record.cert_validation : r.fqdn]
+  value       = module.acm.acm_certificate_validation_record_fqdns
 }
 
 output "route53_zone_id" {
   description = "Hosted zone ID"
-  value       = data.aws_route53_zone.primary.zone_id
+  value       = module.route53.route53_zone_id
 }
 
 output "www_record_fqdn" {
   description = "FQDN of the www record"
-  value       = aws_route53_record.www.fqdn
+  value       = module.route53.www_record_fqdn
 }

@@ -14,11 +14,6 @@ variable "vpc_name" {
   type        = string
 }
 
-variable "vpc_id" {
-  description = "The ID of the VPC."
-  type        = string
-}
-
 variable "vpc_cidr" {
   description = "The CIDR block for the VPC."
   type        = string
@@ -26,11 +21,6 @@ variable "vpc_cidr" {
 
 variable "public_subnet_cidrs" {
   description = "List of CIDR blocks for public subnets."
-  type        = list(string)
-}
-
-variable "public_subnet_ids" {
-  description = "List of public subnet IDs."
   type        = list(string)
 }
 

@@ -1,9 +1,7 @@
 variable "tags" {
   description = "Resource tag key-value pairs."
   type        = map(string)
-  default = {
-    Environment = "dev"
-  }
+  default = {}
 }
 
 variable "project_name" {

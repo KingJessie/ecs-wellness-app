@@ -52,3 +52,10 @@ module "acm" {
   hosted_zone_name = var.hosted_zone_name
   tags             = var.tags
 }
+
+module "route53" {
+  source           = "./modules/route53"
+  hosted_zone_name = var.hosted_zone_name
+  alb_dns_name     = module.alb.alb_dns_name
+  alb_zone_id      = module.alb.alb_zone_id
+}

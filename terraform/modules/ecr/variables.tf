@@ -4,5 +4,8 @@ variable "project_name" {
 
 variable "tags" {
   type    = map(string)
-  default = {}
+  default = {
+    Name        = "ecr-repo",
+    Environment = "dev"
+  }
 }

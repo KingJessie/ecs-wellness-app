@@ -25,7 +25,7 @@ module "alb" {
   project_name      = var.project_name
   vpc_id            = module.vpc.vpc_id
   public_subnet_ids = module.vpc.public_subnet_ids
-  certificate_arn   = module.acm.acm_certificate_arn
+  certificate_arn   = module.acm.acm_certificate_validated_arn
   tags              = var.tags
 }
 
@@ -46,4 +46,9 @@ module "ecs" {
   http_tg_arn                 = module.alb.http_tg_arn
 }
 
-
+module "acm" {
+  source           = "./modules/acm"
+  domain_name      = var.domain_name
+  hosted_zone_name = var.hosted_zone_name
+  tags             = var.tags
+}

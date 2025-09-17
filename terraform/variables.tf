@@ -32,7 +32,6 @@ variable "public_subnet_cidrs" {
 variable "public_subnet_ids" {
   description = "List of public subnet IDs."
   type        = list(string)
-
 }
 
 variable "availability_zones" {
@@ -45,49 +44,6 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
-
-variable "repository_name" {
-  description = "The name of the ECR repository."
-  type        = string
-
-}
-
-variable "cluster_name" {
-  description = "The name of the ECS cluster."
-  type        = string
-}
-
-variable "service_name" {
-  description = "The name of the ECS service."
-  type        = string
-}
-
-variable "desired_count" {
-  description = "The number of instances of the task definition."
-  type        = number
-  default     = 1
-}
-
-variable "container_name" {
-  description = "The name of the container."
-  type        = string
-}
-
-variable "container_image" {
-  description = "The image used to start a container."
-  type        = string
-}
-
-variable "container_port" {
-  description = "Container port to expose."
-  type        = number
-}
-
-variable "repository_url" {
-  description = "The URL of the ECR repository."
-  type        = string
-}
-
 
 variable "domain_name" {
   description = "The domain name"

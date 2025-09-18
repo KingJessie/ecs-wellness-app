@@ -22,13 +22,13 @@ resource "aws_security_group" "alb_sg" {
   vpc_id      = var.vpc_id
   tags        = merge(var.tags, { Name = "alb_sg" })
 
+  # checkov:skip=CKV_AWS_260: Required to allow HTTP traffic for redirection
   ingress {
     from_port   = 80
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
     description = "HTTP for redirect to HTTPS"
-    #checkov:skip=CKV_AWS_260: Required to allow HTTP traffic for redirection
   }
 
   ingress {
@@ -103,8 +103,10 @@ resource "aws_lb_listener" "https" {
   }
 }
 # S3 bucket for ALB logs
+# checkov:skip=CKV_TF_1: Using a stable module version instead of commit hash.
 module "s3_bucket_for_logs" {
   source = "terraform-aws-modules/s3-bucket/aws"
+  version = "5.7.0"
 
   bucket        = "${var.project_name}-alb-logs"
   force_destroy = true

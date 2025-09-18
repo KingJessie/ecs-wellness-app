@@ -35,3 +35,9 @@ jobs:
         id: plan
         run: terraform plan -no-color -input=false
         continue-on-error: false
+
+      - name: Upload Plan
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan
+          path: terraform/plan.txt

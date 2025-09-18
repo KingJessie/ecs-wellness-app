@@ -1,4 +1,3 @@
-# checkov:skip=CKV2_AWS_11: VPC Flow Logs not required for this dev/test deployment.
 resource "aws_vpc" "mainvpc" {
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
@@ -6,7 +5,6 @@ resource "aws_vpc" "mainvpc" {
 }
 
 resource "aws_subnet" "az1" {
-# checkov:skip=CKV_AWS_130: Public subnets needed; instances require internet without NAT
   availability_zone       = var.availability_zones[0]
   cidr_block              = var.public_subnet_cidrs[0]
   vpc_id                  = aws_vpc.mainvpc.id
@@ -15,7 +13,6 @@ resource "aws_subnet" "az1" {
 }
 
 resource "aws_subnet" "az2" {
-# checkov:skip=CKV_AWS_130: Public subnets needed; instances require internet without NAT
   availability_zone       = var.availability_zones[1]
   cidr_block              = var.public_subnet_cidrs[1]
   vpc_id                  = aws_vpc.mainvpc.id
@@ -50,7 +47,6 @@ resource "aws_route_table_association" "route_table_az2" {
 }
 
 resource "aws_default_security_group" "default" {
-# checkov:skip=CKV2_AWS_12: ASG not required for this dev/test deployment.
   vpc_id = aws_vpc.mainvpc.id
   revoke_rules_on_delete = true
     tags = merge(var.tags, { Name = "default_sg" })

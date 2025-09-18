@@ -3,36 +3,27 @@ framework: terraform
 skip-check:
   - id: CKV_TF_1
 
-skip-checks:
+
+skip_checks:
   - id: CKV2_AWS_11
     resource: module.vpc.aws_vpc.mainvpc
-
   - id: CKV_AWS_130
     resource: module.vpc.aws_subnet.az1
-
   - id: CKV_AWS_130
     resource: module.vpc.aws_subnet.az2
-
   - id: CKV2_AWS_12
     resource: module.vpc.aws_default_security_group.default
-
   - id: CKV2_AWS_28
     resource: module.alb.aws_lb.alb
-
   - id: CKV_AWS_260
     resource: module.alb.aws_security_group.alb_sg
-
   - id: CKV_AWS_65
     resource: module.ecs.aws_ecs_cluster.ecs_cluster
-
   - id: CKV_AWS_333
     resource: module.ecs.aws_ecs_service.ecs_service
-
   - id: CKV_AWS_382
     resource: module.ecs.aws_security_group.ecs_task_sg
-
   - id: CKV_AWS_382
     resource: module.ecs.aws_security_group.ecs_instance_sg
-
   - id: CKV_AWS_79
     resource: module.ecs.aws_launch_template.ec2_launch_template

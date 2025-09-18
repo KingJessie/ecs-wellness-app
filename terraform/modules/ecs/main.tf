@@ -4,7 +4,6 @@ locals {
 
 # ECS cluster
 resource "aws_ecs_cluster" "ecs_cluster" {
-  # checkov:skip=CKV_AWS_65: no container insights needed for now
   name = "${local.name_prefix}-ecs-cluster"
   tags = var.tags
 }
@@ -48,7 +47,6 @@ resource "aws_security_group" "ecs_task_sg" {
   }
 
   egress {
-    # checkov:skip=CKV_AWS_382: tasks need outbound internet access
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -59,7 +57,6 @@ resource "aws_security_group" "ecs_task_sg" {
 
 # ECS service
 resource "aws_ecs_service" "ecs_service" {
-  # checkov:skip=CKV_AWS_333: public IP needed for dev/test
   name            = "${local.name_prefix}-ecs-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.service.arn
@@ -92,7 +89,6 @@ resource "aws_security_group" "ecs_instance_sg" {
   description = "ECS container instances"
   vpc_id      = var.vpc_id
   egress {
-    # checkov:skip=CKV_AWS_382: instances need outbound internet access
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -112,8 +108,6 @@ resource "aws_launch_template" "ec2_launch_template" {
   name_prefix   = "${local.name_prefix}-template"
   image_id      = data.aws_ssm_parameter.ecs_ami.value
   instance_type = "t3.micro"
-  # checkov:skip=CKV_AWS_79: not enabling IMDSv2 for dev/test
-
 
   vpc_security_group_ids = [aws_security_group.ecs_instance_sg.id]
   iam_instance_profile {

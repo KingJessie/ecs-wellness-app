@@ -7,3 +7,8 @@ output "public_subnet_ids" {
   description = "Public Subnet IDs"
   value       = [aws_subnet.az1.id, aws_subnet.az2.id]
 }
+
+output "vpc_cidr" {
+  description = "VPC CIDR Block"
+  value       = aws_vpc.mainvpc.cidr_block
+}

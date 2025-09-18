@@ -1,4 +1,5 @@
 resource "aws_vpc" "mainvpc" {
+# checkov:skip=CKV_AWS_11: VPC Flow Logs not required for this dev/test deployment.
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
   tags                 = { Name = var.vpc_name }
@@ -48,5 +49,9 @@ resource "aws_route_table_association" "route_table_az2" {
   route_table_id = aws_route_table.route_table.id
 }
 
-# checkov:skip=CKV_AWS_11: VPC Flow Logs not required for this dev/test deployment.
+resource "aws_default_security_group" "default" {
 # checkov:skip=CKV2_AWS_12: ASG not required for this dev/test deployment.
+  vpc_id = aws_vpc.mainvpc.id
+  revoke_rules_on_delete = true
+    tags = merge(var.tags, { Name = "default_sg" })
+  }

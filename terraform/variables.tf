@@ -37,9 +37,9 @@ variable "availability_zones" {
 variable "tags" {
   description = "Resource tag key-value pairs."
   type        = map(string)
-  default     = {
+  default = {
     "Environment" = "dev"
-    "Owner"       = "jessie.king"}
+  "Owner" = "jessie.king" }
 
 }
 

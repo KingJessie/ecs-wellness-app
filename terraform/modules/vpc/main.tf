@@ -1,5 +1,5 @@
+# checkov:skip=CKV2_AWS_11: VPC Flow Logs not required for this dev/test deployment.
 resource "aws_vpc" "mainvpc" {
-# checkov:skip=CKV_AWS_11: VPC Flow Logs not required for this dev/test deployment.
   cidr_block           = var.vpc_cidr
   enable_dns_hostnames = true
   tags                 = { Name = var.vpc_name }

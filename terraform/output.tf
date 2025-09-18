@@ -23,6 +23,11 @@ output "ecr_repository_url" {
   value       = module.ecr.repository_url
 }
 
+output "ecr_repository_arn" {
+  description = "ECR repository ARN"
+  value       = module.ecr.repository_arn
+}
+
 output "ecs_instance_profile_name" {
   description = "ECS instance profile name"
   value       = module.iam.ecs_instance_profile_name

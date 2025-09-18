@@ -5,6 +5,8 @@ on:
     workflows: ["Terraform Validate"]
     types:
       - completed
+    branches:
+      - main
 
 jobs:
   plan:

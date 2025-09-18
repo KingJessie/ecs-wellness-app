@@ -26,6 +26,7 @@ module "alb" {
   vpc_id            = module.vpc.vpc_id
   public_subnet_ids = module.vpc.public_subnet_ids
   certificate_arn   = module.acm.acm_certificate_validated_arn
+  vpc_cidr          = module.vpc.vpc_cidr
   tags              = var.tags
 }
 

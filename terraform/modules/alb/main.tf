@@ -1,14 +1,20 @@
 # ALB
 resource "aws_lb" "alb" {
-  name               = "${var.project_name}-alb"
+  name                       = "${var.project_name}-alb"
   internal                   = false
   load_balancer_type         = "application"
   security_groups            = [aws_security_group.alb_sg.id]
   subnets                    = var.public_subnet_ids
-  enable_deletion_protection = false # Set to false so the ALB can be deleted after testing
-  tags                       = var.tags
+  enable_deletion_protection = true
+  drop_invalid_header_fields = true
+  access_logs {
+    bucket  = module.s3_bucket_for_logs.s3_bucket_id
+    prefix  = "alb"
+    enabled = true
+  }
+  # checkov:skip=CKV2_AWS_28:WAF not required for this ALB as its a dev/test deployment.
+  tags = var.tags
 }
-
 
 resource "aws_security_group" "alb_sg" {
   name        = "${var.project_name}-alb-sg"
@@ -21,7 +27,8 @@ resource "aws_security_group" "alb_sg" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-    description = "HTTP from anywhere"
+    description = "HTTP for redirect to HTTPS"
+    #checkov:skip=CKV_AWS_260: Required to allow HTTP traffic for redirection
   }
 
   ingress {
@@ -33,13 +40,14 @@ resource "aws_security_group" "alb_sg" {
   }
 
   egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-    description = "All outbound"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = [var.vpc_cidr]
+    description = "Allow traffic from ALB to ECS tasks in VPC"
   }
 }
+
 
 
 # Target group for HTTP
@@ -94,3 +102,19 @@ resource "aws_lb_listener" "https" {
     target_group_arn = aws_lb_target_group.http_tg.arn
   }
 }
+# S3 bucket for ALB logs
+module "s3_bucket_for_logs" {
+  source = "terraform-aws-modules/s3-bucket/aws"
+
+  bucket        = "${var.project_name}-alb-logs"
+  force_destroy = true
+
+  control_object_ownership = true
+  object_ownership         = "BucketOwnerPreferred"
+
+  attach_lb_log_delivery_policy = true
+
+  tags = merge(var.tags, { Name = "alb-logs" })
+}
+
+

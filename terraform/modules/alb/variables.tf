@@ -11,7 +11,7 @@ variable "public_subnet_ids" {
 variable "tags" {
   description = "Resource tag key-value pairs"
   type        = map(string)
-  default = {}
+  default     = {}
 }
 
 variable "vpc_id" {
@@ -21,5 +21,10 @@ variable "vpc_id" {
 
 variable "certificate_arn" {
   description = "The ARN of the ACM certificate for HTTPS."
+  type        = string
+}
+
+variable "vpc_cidr" {
+  description = "The CIDR block of the VPC."
   type        = string
 }

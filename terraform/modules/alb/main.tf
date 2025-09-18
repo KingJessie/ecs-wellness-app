@@ -103,10 +103,10 @@ resource "aws_lb_listener" "https" {
   }
 }
 # S3 bucket for ALB logs
-# checkov:skip=CKV_TF_1: Using a stable module version instead of commit hash.
 module "s3_bucket_for_logs" {
   source = "terraform-aws-modules/s3-bucket/aws"
   version = "5.7.0"
+  # checkov:skip=CKV_TF_1: Using a stable module version instead of commit hash.
 
   bucket        = "${var.project_name}-alb-logs"
   force_destroy = true

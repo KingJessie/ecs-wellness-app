@@ -4,6 +4,7 @@ locals {
 
 # ECS cluster
 resource "aws_ecs_cluster" "ecs_cluster" {
+  # checkov:skip=CKV_AWS_65: no container insights needed for now
   name = "${local.name_prefix}-ecs-cluster"
   tags = var.tags
 }
@@ -23,6 +24,8 @@ resource "aws_ecs_task_definition" "service" {
       memory       = 512
       essential    = true
       portMappings = [{ containerPort = 80 }]
+      readonlyRootFilesystem = true
+  
     }
   ])
 
@@ -45,6 +48,7 @@ resource "aws_security_group" "ecs_task_sg" {
   }
 
   egress {
+    # checkov:skip=CKV_AWS_382: tasks need outbound internet access
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
@@ -55,6 +59,7 @@ resource "aws_security_group" "ecs_task_sg" {
 
 # ECS service
 resource "aws_ecs_service" "ecs_service" {
+  # checkov:skip=CKV_AWS_333: public IP needed for dev/test
   name            = "${local.name_prefix}-ecs-service"
   cluster         = aws_ecs_cluster.ecs_cluster.id
   task_definition = aws_ecs_task_definition.service.arn
@@ -78,11 +83,6 @@ resource "aws_ecs_service" "ecs_service" {
     assign_public_ip = true
   }
 
-  placement_constraints {
-    type       = "memberOf"
-    expression = "attribute:ecs.availability-zone in [${var.availability_zones[0]}, ${var.availability_zones[1]}]"
-  }
-
   tags = merge(var.tags, { Name = "ecs-service" })
 }
 
@@ -92,10 +92,12 @@ resource "aws_security_group" "ecs_instance_sg" {
   description = "ECS container instances"
   vpc_id      = var.vpc_id
   egress {
+    # checkov:skip=CKV_AWS_382: instances need outbound internet access
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
+    description = "All outbound"
   }
 
   tags = merge(var.tags, { Name = "ecs-instance-sg" })
@@ -110,6 +112,7 @@ resource "aws_launch_template" "ec2_launch_template" {
   name_prefix   = "${local.name_prefix}-template"
   image_id      = data.aws_ssm_parameter.ecs_ami.value
   instance_type = "t3.micro"
+  # checkov:skip=CKV_AWS_79: not enabling IMDSv2 for dev/test
 
 
   vpc_security_group_ids = [aws_security_group.ecs_instance_sg.id]
@@ -143,8 +146,8 @@ EOF
 resource "aws_autoscaling_group" "asg" {
   name                      = "${local.name_prefix}-asg"
   min_size                  = 1
-  max_size                  = 2
-  desired_capacity          = 2
+  max_size                  = 3
+  desired_capacity          = 3
   vpc_zone_identifier       = var.public_subnet_ids
   health_check_type         = "EC2"
   health_check_grace_period = 300

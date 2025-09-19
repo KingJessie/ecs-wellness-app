@@ -1,21 +1,25 @@
-FROM node:18-alpine
-
+FROM node:18-alpine AS build
 
 WORKDIR /app
 
-
 COPY package*.json ./
+RUN npm ci
 
-RUN npm ci --only=production
+COPY . .
 
-COPY . .   
+RUN npm run build
 
-RUN addgroup -S appgroup \
- && adduser -S appuser -G appgroup \
- && chown -R appuser:appgroup /app
+FROM node:18-alpine
+
+WORKDIR /app
+
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup
+RUN npm install -g serve
+
+COPY --from=build /app/build ./build
+
 USER appuser
 
 EXPOSE 3000
 
-
-CMD ["npm", "start"]
+CMD ["serve", "-s", "build", "-l", "3000"]

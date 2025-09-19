@@ -24,7 +24,7 @@ resource "aws_ecs_task_definition" "service" {
       essential              = true
 
       portMappings = [
-        { containerPort = 3000, protocol = "tcp" }
+        { containerPort = 80, protocol = "tcp" }
       ]
 
       logConfiguration = {

@@ -7,13 +7,8 @@ resource "aws_lb" "alb" {
   subnets                    = var.public_subnet_ids
   enable_deletion_protection = true
   drop_invalid_header_fields = true
-  access_logs {
-    bucket  = module.s3_bucket_for_logs.s3_bucket_id
-    prefix  = "alb"
-    enabled = true
-  }
+
   tags = var.tags
-  depends_on = [ module.s3_bucket_for_logs ]
 }
 
 resource "aws_security_group" "alb_sg" {
@@ -101,29 +96,3 @@ resource "aws_lb_listener" "https" {
     target_group_arn = aws_lb_target_group.http_tg.arn
   }
 }
-
-resource "random_string" "logs_suffix" {
-  length  = 6
-  lower   = true
-  upper   = false
-  numeric = true
-  special = false
-}
-
-# S3 bucket for ALB logs
-module "s3_bucket_for_logs" {
-  source  = "terraform-aws-modules/s3-bucket/aws"
-  version = "5.7.0"
-
-  bucket        = "${var.project_name}-alb-logs-${random_string.logs_suffix.result}"
-  force_destroy = true
-
-  control_object_ownership = true
-  object_ownership         = "BucketOwnerPreferred"
-
-  attach_lb_log_delivery_policy = true
-
-  tags = merge(var.tags, { Name = "alb-logs" })
-}
-
-

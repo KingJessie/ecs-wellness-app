@@ -17,19 +17,27 @@ resource "aws_ecs_task_definition" "service" {
 
   container_definitions = jsonencode([
     {
-      name         = "${local.name_prefix}-app"
-      image        = "${var.repository_url}:${var.image_tag}"
-      cpu          = 128
-      memory       = 512
-      essential    = true
-      portMappings = [{ containerPort = 3031 }]
+      name                   = "${local.name_prefix}-app"
+      image                  = "${var.repository_url}:${var.image_tag}"
+      cpu                    = 128
+      memory                 = 512
+      essential              = true
       readonlyRootFilesystem = true
-  
+
+      portMappings = [
+        { containerPort = 3031, protocol = "tcp" }
+      ]
+
+      environment = [
+        { name = "DD_UWSGI_MODE", value = "http-socket" },
+        { name = "DD_UWSGI_ENDPOINT", value = "0.0.0.0:3031" }
+      ]
     }
   ])
 
   tags = merge(var.tags, { Name = "service-task-definition" })
 }
+
 
 # Security group for task
 resource "aws_security_group" "ecs_task_sg" {
@@ -75,8 +83,8 @@ resource "aws_ecs_service" "ecs_service" {
   }
 
   network_configuration {
-    subnets          = var.public_subnet_ids
-    security_groups  = [aws_security_group.ecs_task_sg.id]
+    subnets         = var.public_subnet_ids
+    security_groups = [aws_security_group.ecs_task_sg.id]
   }
 
   tags = merge(var.tags, { Name = "ecs-service" })

@@ -58,6 +58,4 @@ variable "hosted_zone_name" {
 variable "image_tag" {
   description = "The Docker image tag."
   type        = string
-  default     = "latest"
-
 }

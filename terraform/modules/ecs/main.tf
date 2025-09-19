@@ -29,7 +29,7 @@ resource "aws_ecs_task_definition" "service" {
       ]
 
       environment = [
-        { name = "DD_UWSGI_MODE", value = "http-socket" },
+        { name = "DD_UWSGI_MODE", value = "http" },
         { name = "DD_UWSGI_ENDPOINT", value = "0.0.0.0:3031" }
       ]
     }

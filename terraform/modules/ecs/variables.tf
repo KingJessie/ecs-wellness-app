@@ -23,7 +23,6 @@ variable "repository_url" {
 variable "image_tag" {
   description = "The Docker image tag."
   type        = string
-  default     = "latest"
 }
 
 variable "ecs_instance_profile_name" {

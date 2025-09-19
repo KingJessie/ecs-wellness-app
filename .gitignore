@@ -28,3 +28,5 @@ build/
 .next/
 out/
 coverage/
+build
+.git

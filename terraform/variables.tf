@@ -7,7 +7,7 @@ variable "region" {
 variable "project_name" {
   description = "Project name."
   type        = string
-  default     = "ddojo"
+  default     = "dojo"
 }
 
 variable "vpc_name" {

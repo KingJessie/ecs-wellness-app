@@ -8,6 +8,7 @@
 FROM python:3.11.13-alpine3.22@sha256:8d8c6d3808243160605925c2a7ab2dc5c72d0e75651699b0639143613e0855b8 AS base
 FROM base AS build
 WORKDIR /app
+ENV PYTHONPATH=/app
 RUN \
   apk update && \
   apk add --no-cache \
@@ -33,6 +34,7 @@ RUN CPUCOUNT=1 pip3 wheel --wheel-dir=/tmp/wheels -r ./requirements.txt
 
 FROM base AS django
 WORKDIR /app
+ENV PYTHONPATH=/app
 ARG uid=1001
 ARG gid=1337
 ARG appuser=defectdojo

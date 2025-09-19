@@ -13,6 +13,7 @@ resource "aws_lb" "alb" {
     enabled = true
   }
   tags = var.tags
+  depends_on = [ module.s3_bucket_for_logs ]
 }
 
 resource "aws_security_group" "alb_sg" {

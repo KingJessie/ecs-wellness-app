@@ -25,12 +25,7 @@ resource "aws_ecs_task_definition" "service" {
       readonlyRootFilesystem = true
 
       portMappings = [
-        { containerPort = 3031, protocol = "tcp" }
-      ]
-
-      environment = [
-        { name = "DD_UWSGI_MODE", value = "http" },
-        { name = "DD_UWSGI_ENDPOINT", value = "0.0.0.0:3031" }
+        { containerPort = 3000, protocol = "tcp" }
       ]
 
       logConfiguration = {
@@ -61,8 +56,8 @@ resource "aws_security_group" "ecs_task_sg" {
   tags        = merge(var.tags, { Name = "ecs-task-sg" })
 
   ingress {
-    from_port       = 3031
-    to_port         = 3031
+    from_port       = 3000
+    to_port         = 3000
     protocol        = "tcp"
     security_groups = [var.alb_sg_id]
     description     = "ALB to tasks HTTP"
@@ -94,7 +89,7 @@ resource "aws_ecs_service" "ecs_service" {
   load_balancer {
     target_group_arn = var.http_tg_arn
     container_name   = "${local.name_prefix}-app"
-    container_port   = 3031
+    container_port   = 3000
   }
 
   network_configuration {

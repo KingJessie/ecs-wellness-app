@@ -7,7 +7,7 @@ variable "region" {
 variable "project_name" {
   description = "Project name."
   type        = string
-  default     = "wellness-app"
+  default     = "wellness-w"
 }
 
 variable "vpc_name" {

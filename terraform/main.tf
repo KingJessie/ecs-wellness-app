@@ -45,6 +45,7 @@ module "ecs" {
   repository_url              = module.ecr.repository_url
   alb_sg_id                   = module.alb.alb_sg_id
   http_tg_arn                 = module.alb.http_tg_arn
+  depends_on                  = [module.alb]
 }
 
 module "acm" {

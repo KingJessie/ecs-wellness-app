@@ -31,8 +31,8 @@ jobs:
       - name: Build Docker image
         uses: docker/build-push-action@v5
         with:
-          context: .
-          file: ./Dockerfile.django-alpine
+          context: ./app
+          file: ./app/Dockerfile.django-alpine
           load: true
           push: false
           tags: |

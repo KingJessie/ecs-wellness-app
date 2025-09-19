@@ -32,12 +32,26 @@ resource "aws_ecs_task_definition" "service" {
         { name = "DD_UWSGI_MODE", value = "http" },
         { name = "DD_UWSGI_ENDPOINT", value = "0.0.0.0:3031" }
       ]
+
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          awslogs-group         = "/ecs/${local.name_prefix}-app"
+          awslogs-region        = var.region
+          awslogs-stream-prefix = "ecs"
+        }
+      }
     }
   ])
 
   tags = merge(var.tags, { Name = "service-task-definition" })
 }
 
+resource "aws_cloudwatch_log_group" "ecs_log_group" {
+  name              = "/ecs/${local.name_prefix}-app"
+  retention_in_days = 7
+  tags              = merge(var.tags, { Name = "ecs-log-group" })
+}
 
 # Security group for task
 resource "aws_security_group" "ecs_task_sg" {
@@ -70,6 +84,7 @@ resource "aws_ecs_service" "ecs_service" {
   task_definition = aws_ecs_task_definition.service.arn
   launch_type     = "EC2"
   desired_count   = 3
+  depends_on      = [aws_cloudwatch_log_group.ecs_log_group]
 
   ordered_placement_strategy {
     type  = "binpack"

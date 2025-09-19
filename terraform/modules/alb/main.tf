@@ -100,12 +100,21 @@ resource "aws_lb_listener" "https" {
     target_group_arn = aws_lb_target_group.http_tg.arn
   }
 }
+
+resource "random_string" "logs_suffix" {
+  length  = 6
+  lower   = true
+  upper   = false
+  numeric = true
+  special = false
+}
+
 # S3 bucket for ALB logs
 module "s3_bucket_for_logs" {
-  source = "terraform-aws-modules/s3-bucket/aws"
+  source  = "terraform-aws-modules/s3-bucket/aws"
   version = "5.7.0"
-  
-  bucket        = "${var.project_name}-alb-logs"
+
+  bucket        = "${var.project_name}-alb-logs-${random_string.logs_suffix.result}"
   force_destroy = true
 
   control_object_ownership = true

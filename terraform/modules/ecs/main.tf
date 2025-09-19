@@ -22,7 +22,7 @@ resource "aws_ecs_task_definition" "service" {
       cpu          = 128
       memory       = 512
       essential    = true
-      portMappings = [{ containerPort = 80 }]
+      portMappings = [{ containerPort = 3031 }]
       readonlyRootFilesystem = true
   
     }
@@ -39,8 +39,8 @@ resource "aws_security_group" "ecs_task_sg" {
   tags        = merge(var.tags, { Name = "ecs-task-sg" })
 
   ingress {
-    from_port       = 80
-    to_port         = 80
+    from_port       = 3031
+    to_port         = 3031
     protocol        = "tcp"
     security_groups = [var.alb_sg_id]
     description     = "ALB to tasks HTTP"
@@ -71,7 +71,7 @@ resource "aws_ecs_service" "ecs_service" {
   load_balancer {
     target_group_arn = var.http_tg_arn
     container_name   = "${local.name_prefix}-app"
-    container_port   = 80
+    container_port   = 3031
   }
 
   network_configuration {

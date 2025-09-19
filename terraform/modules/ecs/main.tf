@@ -55,8 +55,8 @@ resource "aws_security_group" "ecs_task_sg" {
   tags        = merge(var.tags, { Name = "ecs-task-sg" })
 
   ingress {
-    from_port       = 3000
-    to_port         = 3000
+    from_port       = 80
+    to_port         = 80
     protocol        = "tcp"
     security_groups = [var.alb_sg_id]
     description     = "ALB to tasks HTTP"
@@ -88,7 +88,7 @@ resource "aws_ecs_service" "ecs_service" {
   load_balancer {
     target_group_arn = var.http_tg_arn
     container_name   = "${local.name_prefix}-app"
-    container_port   = 3000
+    container_port   = 80
   }
 
   network_configuration {

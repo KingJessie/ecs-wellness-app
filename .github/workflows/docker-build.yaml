@@ -36,7 +36,6 @@ jobs:
           load: true
           push: false
           tags: |
-            ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_ECR_REPO }}:${{ env.IMAGE_TAG }}
             ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_ECR_REPO }}:${{ github.sha }}
 
       # - name: Run Trivy vulnerability scan
@@ -51,5 +50,4 @@ jobs:
 
       - name: Push Docker image to ECR
         run: |
-          docker push ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_ECR_REPO }}:${{ env.IMAGE_TAG }}
           docker push ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_ECR_REPO }}:${{ github.sha }}

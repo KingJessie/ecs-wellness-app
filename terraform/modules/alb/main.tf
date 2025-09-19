@@ -34,8 +34,8 @@ resource "aws_security_group" "alb_sg" {
   }
 
   egress {
-    from_port   = 80
-    to_port     = 80
+    from_port   = 3031
+    to_port     = 3031
     protocol    = "tcp"
     cidr_blocks = [var.vpc_cidr]
     description = "Allow traffic from ALB to ECS tasks in VPC"
@@ -48,7 +48,7 @@ resource "aws_security_group" "alb_sg" {
 resource "aws_lb_target_group" "http_tg" {
   name        = "${var.project_name}-http-tg"
   target_type = "ip"
-  port        = 80
+  port        = 3031
   protocol    = "HTTP"
   vpc_id      = var.vpc_id
 

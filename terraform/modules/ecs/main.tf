@@ -22,7 +22,6 @@ resource "aws_ecs_task_definition" "service" {
       cpu                    = 128
       memory                 = 512
       essential              = true
-      readonlyRootFilesystem = true
 
       portMappings = [
         { containerPort = 3000, protocol = "tcp" }

@@ -1,8 +1,11 @@
 name: Terraform Destroy
 
 on:
-  push:
-    branches: [ main ]
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Docker Build and Push"]
+    types:
+      - completed
 
 jobs:
   plan:
@@ -31,5 +34,5 @@ jobs:
 
       - name: Terraform Destroy
         id: destroy
-        run: terraform destroy -no-color -input=false -auto-approve
+        run: terraform destroy -no-color -input=false -auto-approve -var="image_tag=${{ github.sha }}"
         continue-on-error: false

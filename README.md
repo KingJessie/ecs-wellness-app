@@ -103,13 +103,13 @@ https://github.com/user-attachments/assets/2e0cb02d-8960-4f77-8955-7a06534c9e91
 
 ## Future Improvements
 **Security**
-- Add AWS WAF in front of the ALB: 
+- **Add AWS WAF in front of the ALB*: 
 I plan to attach a Web ACL to the Application Load Balancer to block malicious traffic before it reaches the app. This adds an extra managed security layer against bad actors.
 
 **Security**
-- Move ECS tasks into private subnets: 
+- **Move ECS tasks into private subnets*: 
 Currently, ECS tasks run in public subnets. My goal is to move them into private subnets so they’re never directly exposed to the internet. The ALB will remain public, and tasks will use a NAT Gateway for outbound traffic when required. This reduces the attack surface and keeps container ports hidden.
 
 **Observability**
-- Improve observability: 
+- **Improve observability*: 
 At the moment, I only have basic ECS logs. I plan to add a CloudWatch dashboard that includes ECS, ALB, and EC2 metrics, along with alarms for health, error rates, and latency. This will improve visibility and help reduce Recovery Time Objective (RTO) during incidents.

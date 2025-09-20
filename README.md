@@ -12,6 +12,7 @@
 
 - [Introduction](#intro)
 - [Project Structure](#project-structure)
+- [Features](#features)
 - [Architecture](#architecture-diagram)
 - [Local Setup](#local-setup)
   - [npm](#npm)
@@ -53,6 +54,21 @@ The Wellness app is deployed on AWS via a fully automated pipeline built with Te
     ├── terraform.tfvars
     └── variables.tf
 ```
+
+## Features
+
+| Service / Tool           | Purpose                                                                 |
+|---------------------------|-------------------------------------------------------------------------|
+| **AWS ECS (EC2)**         | Runs containerised workloads on EC2 instances with auto scaling.        |
+| **Application Load Balancer (ALB)** | Distributes traffic across tasks in multiple Availability Zones. |
+| **Route 53**              | Provides DNS and routes traffic to the ALB.                            |
+| **AWS Certificate Manager (ACM)** | Manages TLS certificates to enable secure HTTPS traffic.           |
+| **Amazon ECR**            | Stores and versions Docker images for ECS tasks.                       |
+| **CloudWatch**            | Collects logs and metrics for observability and monitoring.             |
+| **Terraform**             | Infrastructure as Code for provisioning and standardisation.            |
+| **GitHub Actions**        | Automates CI/CD for builds, testing, and deployments.                   |
+
+
 ## Architecture Diagram
 ![Architecture Diagram](./assets/diagram.png)
 **Description:**
@@ -81,6 +97,7 @@ docker compose up
 ```
 
 ## Demo
+https://github.com/user-attachments/assets/2e0cb02d-8960-4f77-8955-7a06534c9e91
 
 
 

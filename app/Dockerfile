@@ -1,14 +1,15 @@
 FROM node:18-alpine AS build
 WORKDIR /app
 COPY package*.json ./
-# Non-root user
-RUN addgroup -S appgroup \
-    && adduser -S -G appgroup appuser
-USER appuser
 
 RUN npm ci
 COPY . .
 RUN npm run build
+
+# Non-root user
+RUN addgroup -S appgroup \
+    && adduser -S -G appgroup appuser
+USER appuser
 
 FROM nginx:alpine
 RUN rm -f /etc/nginx/conf.d/default.conf

@@ -110,6 +110,11 @@ I plan to attach a Web ACL to the Application Load Balancer to block malicious t
 - **Move ECS tasks into private subnets**: 
 Currently, ECS tasks run in public subnets. My goal is to move them into private subnets so they’re never directly exposed to the internet. The ALB will remain public, and tasks will use a NAT Gateway for outbound traffic when required. This reduces the attack surface and keeps container ports hidden.
 
+**Security**
+- **More Security**
+- Implement OIDC instead of hardcoded AWS credentials.
+- Integrate Trivy for Docker image scanning and Checkov for Terraform IaC security checks.
+
 **Observability**
 - **Improve observability**: 
 At the moment, I only have basic ECS logs. I plan to add a CloudWatch dashboard that includes ECS, ALB, and EC2 metrics, along with alarms for health, error rates, and latency. This will improve visibility and help reduce Recovery Time Objective (RTO) during incidents.

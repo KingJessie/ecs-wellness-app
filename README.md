@@ -112,7 +112,7 @@ Currently, ECS tasks run in public subnets. My goal is to move them into private
 
 **Security**
 - **More Security**
-- Implement OIDC instead of hardcoded AWS credentials.
+- Implement OIDC instead for AWS credentials.
 - Integrate Trivy for Docker image scanning and Checkov for Terraform IaC security checks.
 
 **Observability**

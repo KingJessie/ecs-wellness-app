@@ -18,6 +18,7 @@
   - [npm](#npm)
   - [Docker](#docker)
 - [Demo](#demo)
+- [Security](#security)
 - [Future Improvements](#future-improvements)
 
 ## Introduction
@@ -99,7 +100,13 @@ docker compose up
 ## Demo
 https://github.com/user-attachments/assets/2e0cb02d-8960-4f77-8955-7a06534c9e91
 
+## Security
 
+| **Security & Compliance Measure** | **Purpose** |
+|-----------------------------------|--------------|
+| **OIDC Authentication** | Enables secure, keyless AWS access using short-lived tokens instead of static credentials. |
+| **Checkov Scanning** | Detects Terraform misconfigurations and enforces infrastructure compliance policies. |
+| **Trivy Scanning** | Scans Docker images for vulnerabilities to ensure secure container deployments. |
 
 ## Future Improvements
 **Security**
@@ -109,11 +116,6 @@ I plan to attach a Web ACL to the Application Load Balancer to block malicious t
 **Security**
 - **Move ECS tasks into private subnets**: 
 Currently, ECS tasks run in public subnets. My goal is to move them into private subnets so they’re never directly exposed to the internet. The ALB will remain public, and tasks will use a NAT Gateway for outbound traffic when required. This reduces the attack surface and keeps container ports hidden.
-
-**Security**
-- **More Security**
-- Implement OIDC instead for AWS credentials.
-- Integrate Trivy for Docker image scanning and Checkov for Terraform IaC security checks.
 
 **Observability**
 - **Improve observability**: 

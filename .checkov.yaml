@@ -1,10 +1,9 @@
 framework: terraform
 
 skip-check:
-  - id: CKV_TF_1
+  - CKV_TF_1
 
-
-skip_checks:
+suppressions:
   - id: CKV2_AWS_11
     resource: module.vpc.aws_vpc.mainvpc
   - id: CKV_AWS_130

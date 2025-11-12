@@ -1,0 +1,54 @@
+name: Docker Build and Push
+
+on:
+  workflow_run:
+    workflows: ["Terraform Apply"]
+    types: [completed]
+
+jobs:
+  build_and_push:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./app
+          file: ./app/Dockerfile
+          load: true
+          push: false
+          tags: |
+            ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_ECR_REPO }}:${{ github.sha }}
+
+      - name: Run Trivy vulnerability scan
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_ECR_REPO }}:${{ github.sha }}
+          format: table
+          exit-code: 1
+          ignore-unfixed: true
+          vuln-type: os,library
+          severity: CRITICAL,HIGH
+        continue-on-error: true
+
+      - name: Push Docker image to ECR
+        run: |
+          docker push \
+            ${{ steps.login-ecr.outputs.registry }}/${{ secrets.AWS_ECR_REPO }}:${{ github.sha }}

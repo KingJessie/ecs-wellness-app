@@ -12,9 +12,9 @@
 
 - [Introduction](#intro)
 - [Project Structure](#project-structure)
+- [Plan](#plan)
 - [Features](#features)
 - [Architecture](#architecture-diagram)
-- [Plan](#plan)
 - [Local Setup](#local-setup)
   - [npm](#npm)
   - [Docker](#docker)

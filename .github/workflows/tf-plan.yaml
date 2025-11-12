@@ -35,5 +35,9 @@ jobs:
         run: terraform init -input=false
 
       - name: Terraform Plan
-        id: plan
-        run: terraform plan -no-color -input=false -var="image_tag=${{ github.sha }}"
+        run: |
+          terraform plan \
+            -no-color \
+            -input=false \
+            -lock-timeout=5m \
+            -var="image_tag=${{ github.sha }}"

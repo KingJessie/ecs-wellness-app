@@ -14,6 +14,7 @@
 - [Project Structure](#project-structure)
 - [Features](#features)
 - [Architecture](#architecture-diagram)
+- [Plan](#plan)
 - [Local Setup](#local-setup)
   - [npm](#npm)
   - [Docker](#docker)
@@ -55,6 +56,23 @@ The Wellness app is deployed on AWS via a fully automated pipeline built with Te
     ├── terraform.tfvars
     └── variables.tf
 ```
+
+## Plan
+
+### Design Considerations
+
+**Miro**
+
+Before building the infrastructure, I created a Miro diagram to compare ECS Fargate and ECS with EC2.
+Fargate offered simplicity and lower management overhead, but I chose ECS with EC2 for greater control over configuration, networking, and scaling.
+![Miro Diagram](./assets/plan1.png)
+
+**Trello Board**
+
+I also set up a Trello board to create and refine tickets, helping track progress and break down the build into manageable tasks.
+
+![Trello Board](./assets/trello.png)
+![Trello Ticket](./assets/ticket1.png)
 
 ## Features
 
@@ -107,6 +125,10 @@ https://github.com/user-attachments/assets/2e0cb02d-8960-4f77-8955-7a06534c9e91
 | **OIDC Authentication** | Enables secure, keyless AWS access using short-lived tokens instead of static credentials. |
 | **Checkov Scanning** | Detects Terraform misconfigurations and enforces infrastructure compliance policies. |
 | **Trivy Scanning** | Scans Docker images for vulnerabilities to ensure secure container deployments. |
+
+> Note: The Checkov scan is intentionally configured to fail as part of the test.
+This demonstrates that security scanning is active and functioning correctly, not that the configuration is insecure.
+
 
 ## Future Improvements
 **Security**
